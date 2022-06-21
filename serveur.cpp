@@ -1,29 +1,36 @@
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <sys/socket.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
-#include <iostream>
-#include <poll.h>
+#include "sockets.hpp"
 
 #define PORT 8080
 int main(int ac, char **av)
 {
+    sockets sock(AF_INET, SOCK_STREAM, 0);
+    sock.setadress();
+    sock.my_bind();
+    sock.my_listen(10);
+    while (1)
+    {
+        std::cout << std::endl;
+        std::cout << "+++++++ Waiting for new connection ++++++++" << std::endl;
+        std::cout << std::endl;
+        sock.my_accept();
+        sock.my_recv();
+         std::cout << "hamade" << std::endl;
+    }
+
+    /*
     int ss;
     int sock_dis;
     struct sockaddr_in serveur_adr;
     int addrlen = sizeof(serveur_adr);
     struct pollfd mypoll;
 
-    /*create socket*/
+    create socket
     if ((ss = socket(AF_INET, SOCK_STREAM, 0)) < 0)
     {
         std::cout << "server: erreur de creation d socket" << std::endl;
         exit(0);
     }
-    /*bind: donee un adress et un port a notre socket*/
+    bind: donee un adress et un port a notre socket
     serveur_adr.sin_family = AF_INET;
     serveur_adr.sin_addr.s_addr = INADDR_ANY;
     serveur_adr.sin_port = htons( PORT );
@@ -33,7 +40,7 @@ int main(int ac, char **av)
         std::cout << "serveur: erreur in socket" << std::endl;
         exit(0);
     }
-    /*listen: attente des clients*/
+    listen: attente des clients
     if (listen(ss, 10) < 0)
     {
         std::cout << "srveur:erreur au niveau de l'ecoute" << std::endl;
@@ -42,7 +49,7 @@ int main(int ac, char **av)
     memset(&mypoll, 0, sizeof(mypoll));
     mypoll.fd = 0;
     mypoll.events = POLLIN;
-    /*accept: accepter une demande de conexion*/
+    accept: accepter une demande de conexion
     while (1)
     {
         std::cout << std::endl;
@@ -53,7 +60,7 @@ int main(int ac, char **av)
             std::cout << "serveur: erreur d'acceptation" << std::endl;
             exit(0);
         }
-        /*recev: recuperer les donnes du client*/
+        recev: recuperer les donnes du client
         char buf[1024];
         int buf_len;
         if ((buf_len = recv(sock_dis, buf, 1024, 0)) < 0)
@@ -64,6 +71,5 @@ int main(int ac, char **av)
         std::cout << "hamade" << std::endl;
 
     }
-
-
+*/
 }
